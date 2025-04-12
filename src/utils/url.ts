@@ -1,0 +1,1 @@
+export const baseUrl: string ="s-libraries.uz/api/v1"
