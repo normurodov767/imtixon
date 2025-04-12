@@ -1,7 +1,6 @@
 import { baseUrl } from '@/utils/url';
 import axios from 'axios';
 import React, { useState, useEffect } from 'react';
-import { Posts } from '../interface/PostsID';
 import { useParams } from 'next/navigation';
 
 function useFetch<T>(url: string) {
