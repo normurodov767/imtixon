@@ -4,10 +4,10 @@ import { useRouter } from 'next/navigation'
 import React, { useState } from 'react'
 
 function Login() {
-    const {login, loading} = useAuth() 
+    const {login, logOut, error, loading} = useAuth() 
     const [phone, setPhone] = useState<string>("")
     const [password, setPassword] = useState<string>("")
-    let router = useRouter();
+    const router = useRouter();
     if (localStorage.getItem("token")) {
         router.push("/dashboard")
     }

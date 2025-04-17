@@ -3,7 +3,7 @@ import React from "react";
 import { useRouter } from "next/navigation";
 
 function Page() {
-  let router = useRouter();
+  const router = useRouter();
 
   if (typeof window !== "undefined" && localStorage.getItem("token")) {
     router.push("/dashboard");
