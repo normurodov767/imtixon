@@ -16,35 +16,70 @@ function useAuth() {
 
     ///////////////////////////////////////
 
-    async function login(phone:string, password:string){
+    // async function login(phone:string, password:string){
 
+    //     try {
+    //         let res = await axios.post(baseUrl + "auth/login/",{
+    //             phone,
+    //             password    
+    //         },{
+    //             headers: {
+    //                 'Content-Type': 'application/json'
+    //             }
+    //         })
+    //         if (res.status === 200) {
+    //             router.push("/dashboard")
+    //             localStorage.setItem ("token",res.data.access)
+    //         }
+    //         if(res.status === 401){
+    //         }
+    //         console.log(res);
+    //     } catch (error:any) {
+    //         alert('Accaunt is not verified')
+    //         setError(error.message)
+    //     }finally{
+    //         setLoading(false)
+    //     }
+    // }
+    async function login(phone: string, password: string) {
         try {
-            let res = await axios.post(baseUrl + "auth/login/",{
-                phone,
-                password    
-            },{
-                headers: {
-                    'Content-Type': 'application/json'
-                }
-            })
-            if (res.status === 200) {
-                router.push("/dashboard")
-                localStorage.setItem ("token",res.data.token)
+          setLoading(true);
+          const res = await axios.post(baseUrl + "auth/login/", {
+            phone,
+            password
+          }, {
+            headers: {
+              'Content-Type': 'application/json'
             }
-            console.log(res);
-        } catch (error:any) {
-            setError(error.message)
-        }finally{
-            setLoading(false)
+          });
+      
+          if (res.status === 200) {
+            localStorage.setItem("token", res.data.access);
+            router.push("/dashboard");
+          }
+      
+          console.log(res);
+        } catch (error: any) {
+          alert('Account is not verified');
+          setError(error.message);
+        } finally {
+          setLoading(false);
         }
-    }
+      }
+      
     ///////////////////////////////////////
-    async function Register( password:string,name:string, phone:string,){
+    async function Register( password:string,name:string, phone:string,address:string,){
         try {
             let res = await axios.post(baseUrl + "auth/register-library/",{
-                password,
-                name,
-                phone,
+                user:{
+                    password,
+                    phone, 
+                    name,
+                    
+                },
+                library:{
+                    address
+                },
             },{
                 headers: {
                     'Content-Type': 'application/json'
@@ -52,7 +87,7 @@ function useAuth() {
             })
             console.log(res.status);
             console.log('Response data:', res.data);
-            if (res.status === 200) {
+            if (res.status === 201) {
                 router.push("/dashboard")
                 localStorage.setItem ("token",res.data.token)
             }

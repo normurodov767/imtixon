@@ -1,84 +1,63 @@
+import { baseUrl } from '@/utils/url';
 import axios from 'axios';
 import React, { useState, useEffect } from 'react';
 import { useParams } from 'next/navigation';
-import { baseUrl } from '@/utils/url';
-
 
 function useFetch<T>(url: string) {
   const [data, setData] = useState<T | null>(null); // this for setting the data data
-  const [Profiles, setProfiles] = useState<T | undefined>(undefined); // this for setting profiles like data developers
   const [error, setError] = useState<string>(''); //this is for error from something
   const [loading, setLoading] = useState<boolean>(false); // this is for loading when data comming
   const [user, setUser] = useState<T | null>(null); // this for setting the user like data in dashboard
-  const [posts, setPosts] = useState<T | null>(null); // this for setting the posts like data in posts
-  const [statusofLike, setStatusofLike] = useState<any>(); // this is for me just to see status of like because like is problem function
-  const [statusofuser,SetStatusOfUser] = useState<boolean>(true)
+  // const [canrentabook , setCanRentaBook] use<boolean>(false)
+  const [statusofuser,SetStatusOfUser] = useState<boolean>(false)
+  const [can_rent_books,SetCanRentaBook] = useState<boolean>(false)
+  const [location,SetLocation] = useState<boolean>(false)
+  const [length,SetLength] = useState<number>(0)
+
 
   //////////////////////////////////////////////////////////////////////////// tihs for getting me in dashboard
 
-  async function getMe() {
+  async function Geteverythink() {
     try {
       setError('');
       setLoading(true);
-      let res = await axios.get(baseUrl + url, {
+  
+      const token = localStorage.getItem('token');
+
+  
+      const res = await axios.get(baseUrl + url, {
         headers: {
-          'x-auth-token': `${localStorage.getItem('token')}`,
+          'Authorization': `Bearer ${token}`,
           'Content-Type': 'application/json',
         },
       });
+  
+      console.log(res.data, '🟢 USER DATA');
       setData(res.data);
-      setProfiles(res.data);
-      setPosts(res.data);
-      setLoading(false);
-      setUser(res.data);
-      console.log(res.data)
-
-      if (res.status === 400) {
-      SetStatusOfUser(false)
-      console.log();
-      
-      }
-
+      SetStatusOfUser(true);
+      SetCanRentaBook(res.data.can_rent_books)
+      SetLocation(res.data.address)
+      SetLength(res.data.length)
     } catch (error: any) {
+      console.error('🔴 ERROR:', error);
       setError(error.message);
-      setLoading(false);
-      console.log(error);
-      SetStatusOfUser(false)
-      
+      SetStatusOfUser(false);
     } finally {
       setLoading(false);
     }
   }
-
+  ////////////////////////////////////////////////////////////////////////////
+  
   //////////////////////////////////////////////////////////////////////////// this is to using functions anywhere
 
   useEffect(() => {
-    getMe();
-    // GetProfiles();
+    Geteverythink();
   }, [url]);
 
-  //////////////////////////////////////////////////////////////////////////// this is to getting profiles in developers
 
-  async function GetProfiles() {
-    try {
-      setLoading(true);
-      let res = await axios.get(baseUrl + url, {
-        headers: {
-          // there no token bcs (because) this is public :>
-          'Content-Type': 'application/json',
-        },
-      });
-      setProfiles(res.data);
-      console.log(res);
-    } catch (error: any) {
-      setError(error.massage);
-      setLoading(false);
-    } finally {
-      setLoading(false);
-    }
-  }
   //////////////////////////////////////////////////////////////////////////// there we export all functions and datas
-  return { loading, error, data, Profiles, user, posts,  statusofLike,statusofuser,SetStatusOfUser};
+  
+  return { loading, error,  data, user,statusofuser,can_rent_books,SetStatusOfUser,location,length};
 }
 
 export default useFetch;

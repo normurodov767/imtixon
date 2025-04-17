@@ -1,4 +1,4 @@
-"use client"
+'use client'
 import useAuth from '@/hooks/useAuth'
 import { useRouter } from 'next/navigation'
 import React, { useState } from 'react'
@@ -8,6 +8,8 @@ function Login() {
     const [name, setName] = useState<string>("")
     const [phone, setPhone] = useState<string>("")
     const [password, setPassword] = useState<string>("")
+    const [address, setAddress] = useState<string>("")
+    
     let router = useRouter();
     
     if (localStorage.getItem("token")) {
@@ -16,7 +18,7 @@ function Login() {
 
     const onSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
-        await Register(password,name,phone, )
+        await Register(password,name,phone,address)
     }
     
     if (error) {
@@ -39,6 +41,12 @@ function Login() {
                         onChange={(e) => setPhone(e.target.value)}   
                         type="text" 
                         placeholder="set ur Phone number" 
+                        className="w-full p-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                    />
+                    <input 
+                        onChange={(e) => setAddress(e.target.value)}   
+                        type="address" 
+                        placeholder="address" 
                         className="w-full p-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
                     />
                     <input 

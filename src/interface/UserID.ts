@@ -1,4 +1,4 @@
-export interface User{_id: number | string;
+ export interface User{_id: number | string;
     bio: string;
     status: string;
     company: string;

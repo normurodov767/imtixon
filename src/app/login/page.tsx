@@ -1,4 +1,4 @@
-"use client"
+'use client'
 import useAuth from '@/hooks/useAuth'
 import { useRouter } from 'next/navigation'
 import React, { useState } from 'react'
@@ -8,10 +8,10 @@ function Login() {
     const [phone, setPhone] = useState<string>("")
     const [password, setPassword] = useState<string>("")
     let router = useRouter();
-    
     if (localStorage.getItem("token")) {
         router.push("/dashboard")
     }
+    
 
     const onSubmit = async (e: React.FormEvent) => {
         e.preventDefault();

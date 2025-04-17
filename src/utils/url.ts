@@ -1,1 +1,1 @@
-export const baseUrl: string ="s-libraries.uz/api/v1"
+export const baseUrl: string ="https://s-libraries.uz/api/v1/"
