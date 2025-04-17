@@ -5,7 +5,7 @@ import { useRouter } from 'next/navigation';
 import React from 'react';
 
 function Dashboard() {
-  const { data, loading, error, statusofuser, can_rent_books, location } = useFetch<User>('auth/profile/');
+  const { data, statusofuser, can_rent_books, location } = useFetch<User>('auth/profile/');
   const router = useRouter();
   
   if (typeof window !== 'undefined' && !localStorage.getItem('token')) {
