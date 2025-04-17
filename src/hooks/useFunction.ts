@@ -1,10 +1,10 @@
 import { baseUrl } from '@/utils/url';
 import axios from 'axios';
-import React, { useState, useEffect } from 'react';
-import { useParams } from 'next/navigation';
+import React, { useState  } from 'react';
+
 
 function useFunction<T>(url:string) {
-    const [data, setData] = useState<T | null>(null); // this for setting the data data
+    
     const [error, setError] = useState<string>(''); //this is for error from something
     const [loading, setLoading] = useState<boolean>(false); // this is for loading when data comming
      
@@ -53,7 +53,7 @@ function useFunction<T>(url:string) {
         setLoading(false);
       }
     }
-  return {data,error,loading,PostBook,DeleteBook}
+  return { error, loading, PostBook, DeleteBook}
 }
 
 export default useFunction

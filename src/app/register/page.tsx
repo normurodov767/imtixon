@@ -4,7 +4,7 @@ import { useRouter } from 'next/navigation'
 import React, { useState } from 'react'
 
 function Login() {
-    const {login, logOut,  error, loading, Register} = useAuth() 
+    const { error, loading, Register} = useAuth() 
     const [name, setName] = useState<string>("")
     const [phone, setPhone] = useState<string>("")
     const [password, setPassword] = useState<string>("")

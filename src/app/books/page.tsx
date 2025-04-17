@@ -6,7 +6,7 @@ import { useRouter } from 'next/navigation';
 import React, { useState } from 'react';
 
 function BooksDashboard() {
-  const { data, loading, error } = useFetch<Book[] | null>('books/books');
+  const { data } = useFetch<Book[] | null>('books/books');
   const router = useRouter();
   const [showForm, setShowForm] = useState(false);
   const { DeleteBook } = useFunction<Book | null>("books/book/");

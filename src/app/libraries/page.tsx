@@ -5,7 +5,7 @@ import { useRouter } from 'next/navigation';
 import React from 'react';
 
 function Dashboard() {
-  const { data, loading, error, statusofuser } = useFetch<User | null>('libraries/libraries');
+  const { data } = useFetch<User | null>('libraries/libraries');
   const router = useRouter();
 
   if (typeof window !== 'undefined' && !localStorage.getItem('token')) {

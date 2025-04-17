@@ -9,7 +9,7 @@ import { User } from "@/interface/User";
 function Navbar() {
   const token = localStorage.getItem('token');
   const pathname = usePathname();
-  const { data, loading, error, statusofuser, SetStatusOfUser } = useFetch<User>('profile/me');
+  const { SetStatusOfUser } = useFetch<User>('auth/profile');
   const router = useRouter();
 
   const logOut = () => {

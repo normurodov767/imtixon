@@ -1,46 +1,17 @@
 "use client";
-import { User } from '@/interface/User';
 import { baseUrl } from '@/utils/url';
 import axios from 'axios';
 import { useRouter } from 'next/navigation';
-import React, { useEffect, useState } from 'react'
+import React, { useState } from 'react'
 
 function useAuth() {
-    const [userinlogin, setUserinLogin] = useState<User | null>(null) // this is to set user
+   
     const [error, setError] = useState<string>("")// this to set error
     const [loading, setLoading] = useState<boolean>(false) // this to set loading 
     const router = useRouter()//this is to push user when status is perfect
 
 
 
-
-    ///////////////////////////////////////
-
-    // async function login(phone:string, password:string){
-
-    //     try {
-    //         let res = await axios.post(baseUrl + "auth/login/",{
-    //             phone,
-    //             password    
-    //         },{
-    //             headers: {
-    //                 'Content-Type': 'application/json'
-    //             }
-    //         })
-    //         if (res.status === 200) {
-    //             router.push("/dashboard")
-    //             localStorage.setItem ("token",res.data.access)
-    //         }
-    //         if(res.status === 401){
-    //         }
-    //         console.log(res);
-    //     } catch (error:any) {
-    //         alert('Accaunt is not verified')
-    //         setError(error.message)
-    //     }finally{
-    //         setLoading(false)
-    //     }
-    // }
     async function login(phone: string, password: string) {
         try {
           setLoading(true);
@@ -108,7 +79,7 @@ function useAuth() {
 
 
 
-  return {login,logOut,userinlogin,error,loading,Register};
+  return {login,logOut, error,loading,Register};
 }
 
 export default useAuth
