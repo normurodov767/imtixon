@@ -1,63 +1,66 @@
 import { baseUrl } from '@/utils/url';
 import axios from 'axios';
-import  { useState, useEffect } from 'react';
-
+import { useState, useEffect } from 'react';
 
 function useFetch<T>(url: string) {
-  const [data, setData] = useState<T | null>(null); // this for setting the data data
-  const [error, setError] = useState<string>(''); //this is for error from something
-  const [loading, setLoading] = useState<boolean>(false); // this is for loading when data comming
-  const [user, setUser] = useState<T | null>(null); // this for setting the user like data in dashboard
-  // const [canrentabook , setCanRentaBook] use<boolean>(false)
-  const [statusofuser,SetStatusOfUser] = useState<boolean>(false)
-  const [can_rent_books,SetCanRentaBook] = useState<boolean>(false)
-  const [location,SetLocation] = useState<boolean>(false)
-  const [length,SetLength] = useState<number>(0)
-
-
-  //////////////////////////////////////////////////////////////////////////// tihs for getting me in dashboard
-
-  async function Geteverythink() {
-    try {
-      setError('');
-      setLoading(true);
-  
-      const token = localStorage.getItem('token');
-
-  
-      const res = await axios.get(baseUrl + url, {
-        headers: {
-          'Authorization': `Bearer ${token}`,
-          'Content-Type': 'application/json',
-        },
-      });
-  
-      console.log(res.data, '🟢 USER DATA');
-      setData(res.data);
-      SetStatusOfUser(true);
-      SetCanRentaBook(res.data.can_rent_books)
-      SetLocation(res.data.address)
-      SetLength(res.data.length)
-    } catch (error: any) {
-      console.error('🔴 ERROR:', error);
-      setError(error.message);
-      SetStatusOfUser(false);
-    } finally {
-      setLoading(false);
-    }
-  }
-  ////////////////////////////////////////////////////////////////////////////
-  
-  //////////////////////////////////////////////////////////////////////////// this is to using functions anywhere
+  const [data, setData] = useState<T | null>(null);
+  const [error, setError] = useState<string>('');
+  const [loading, setLoading] = useState<boolean>(false);
+  const [statusOfUser, setStatusOfUser] = useState<boolean>(false);
+  const [canRentBooks, setCanRentBooks] = useState<boolean>(false);
+  const [location, setLocation] = useState<boolean>(false); // address presence flag
+  const [length, setLength] = useState<number>(0);
 
   useEffect(() => {
-    Geteverythink();
+    const getEverything = async () => {
+      try {
+        setError('');
+        setLoading(true);
+
+        const token = localStorage.getItem('token');
+        if (!token) {
+          throw new Error('No token found');
+        }
+
+        const res = await axios.get(baseUrl + url, {
+          headers: {
+            Authorization: `Bearer ${token}`,
+            'Content-Type': 'application/json',
+          },
+        });
+
+        console.log(res.data, '🟢 USER DATA');
+
+        setData(res.data);
+        setStatusOfUser(true);
+        setCanRentBooks(res.data.can_rent_books);
+        setLocation(!!res.data.address);
+        setLength(res.data.length || 0);
+      } catch (error) {
+        console.error('🔴 ERROR:', error);
+        if (error instanceof Error) {
+          setError(error.message);
+        }
+        setStatusOfUser(false);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    getEverything();
   }, [url]);
 
-
-  //////////////////////////////////////////////////////////////////////////// there we export all functions and datas
-  
-  return { loading, error,  data, user,statusofuser,can_rent_books,SetStatusOfUser,location,length};
+  return {
+    loading,
+    error,
+    data,
+    statusOfUser,
+    canRentBooks,
+    location,
+    length,
+    setStatusOfUser,
+  };
 }
 
 export default useFetch;
+
