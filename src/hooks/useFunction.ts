@@ -1,82 +1,59 @@
 import { baseUrl } from '@/utils/url';
 import axios from 'axios';
-import { useState } from 'react';
+import  { useState } from 'react';
 
-function useFunction<T>(url: string) {
-  const [data, setData] = useState<T | null>(null);
-  const [error, setError] = useState<string>('');
-  const [loading, setLoading] = useState<boolean>(false);
-
-  // Добавление книги
-  const postBook = async (name: string, author: string, publisher: string) => {
+function useFunction<T>(url:string) {
+    const [data, setData] = useState<T | null>(null); // this for setting the data data
+    const [error, setError] = useState<string>(''); //this is for error from something
+    const [loading, setLoading] = useState<boolean>(false); // this is for loading when data comming
+     
+  async function PostBook(name: string,author:string,publisher:string){
     try {
       setError('');
       setLoading(true);
-
-      const token = localStorage.getItem('token');
-      if (!token) throw new Error('No auth token found');
-
-      const res = await axios.post(
-        `${baseUrl}${url}`,
-        { name, author, publisher },
+      let res = await axios.post(baseUrl + url,
         {
-          headers: {
-            'x-auth-token': token,
-            'Content-Type': 'application/json',
-          },
+          name,
+          author,
+          publisher
         }
-      );
-
-      setData(res.data);
-      console.log(res.status, res.data);
-
-    } catch (error) {
-      if (error instanceof Error) {
-        setError(error.message);
-      }
+        , {
+        headers: {
+          'x-auth-token': `${localStorage.getItem('token')}`,
+          'Content-Type': 'application/json',
+        },
+      });
+      console.log(res.status);
+      console.log(res);
+    } catch (error: any) {
+      setError(error.message);
     } finally {
       setLoading(false);
     }
-  };
-
-  // Удаление книги
-  const deleteBook = async (bookId: string) => {
-    try {
-      setError('');
-      setLoading(true);
-
-      const token = localStorage.getItem('token');
-      if (!token) throw new Error('No auth token found');
-
-      const res = await axios.delete(
-        `${baseUrl}${url}${bookId}/`,
-        {
+  }
+  async function DeleteBook(book_id:string){
+    
+      try {
+        setError('');
+        setLoading(true);
+        let res = await axios.delete(baseUrl + url + book_id + "/", {
           headers: {
-            'x-auth-token': token,
+            'x-auth-token': `${localStorage.getItem('token')}`,
             'Content-Type': 'application/json',
           },
-        }
-      );
-
-      console.log(res.status, res.data);
-
-    } catch (error) {
-      if (error instanceof Error) {
+        });
+        console.log(res.status);
+        console.log(res, "sdfghjhgfdfghjhgfdsdfghjk ");
+        
+      } catch (error: any) {
         setError(error.message);
-        console.error(error);
+        console.log(error);
+        
+      } finally {
+        setLoading(false);
       }
-    } finally {
-      setLoading(false);
     }
-  };
-
-  return {
-    data,
-    error,
-    loading,
-    postBook,
-    deleteBook,
-  };
+  return {data,error,loading,PostBook,DeleteBook}
 }
 
-export default useFunction;
+export default useFunction
